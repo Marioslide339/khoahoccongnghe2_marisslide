@@ -767,7 +767,7 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
                       />
                       <div className="course-check-info">
                         <span className="course-check-badge">🔥 Siêu tiết kiệm</span>
-                        <span className="course-check-title">⭐ COMBO 6 KHOÁ HỌC (TRỌN BỘ 6 KHOÁ)</span>
+                        <span className="course-check-title">⭐ COMBO 6 KHOÁ HỌC</span>
                       </div>
                     </div>
                     <div className="course-check-price">
