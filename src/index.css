@@ -1563,8 +1563,148 @@ select.form-ctrl option { background: #fff; color: var(--text-dark); }
 @media(max-width:768px) {
   .hero { padding: 40px 16px 50px; }
   .cta-box { padding: 36px 20px; }
-  .modal-head, .reg-head, .pay-head, .products-head { padding: 20px 20px 16px; }
-  .modal-body, .reg-body, .pay-body, .products-body { padding: 18px 20px 22px; }
+  .modal-overlay { padding: 8px; }
+  .modal-head, .reg-head, .pay-head, .products-head { padding: 20px 20px 14px; }
+  .modal-body, .reg-body, .pay-body, .products-body { padding: 16px 18px 20px; }
+  
+  .lesson-modal, .reg-modal, .pay-modal, .products-modal {
+    max-height: 96vh;
+    border-radius: 16px;
+  }
+}
+
+@media(max-width:480px) {
+  /* Prevent horizontal layout squeeze of input fields on mobile */
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .form-group {
+    margin-bottom: 12px;
+  }
+  
+  .reg-title, .pay-title {
+    font-size: 19px;
+  }
+  
+  /* Optimize course checklist size to leave space for submit button */
+  .course-checklist {
+    max-height: 200px;
+    gap: 8px;
+    padding: 2px;
+  }
+  
+  .course-check-item {
+    padding: 10px 12px;
+    gap: 8px;
+    border-radius: 8px;
+  }
+  
+  .course-check-icon {
+    font-size: 16px;
+  }
+  
+  .course-check-title {
+    font-size: 12px;
+  }
+  
+  .course-price-new {
+    font-size: 13px;
+  }
+  
+  .price-summary-box {
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 10px;
+    gap: 6px;
+  }
+  
+  .summary-price {
+    font-size: 18px;
+  }
+  
+  .combo-upgrade-tip {
+    font-size: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+  }
+  
+  /* Bank transfer info layout stacking to prevent field truncation */
+  .bank-tabs {
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  
+  .bank-tab {
+    padding: 10px 8px;
+    font-size: 12px;
+    border-radius: 10px;
+  }
+  
+  .bank-info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 8px 12px;
+  }
+  
+  .bi-label {
+    min-width: auto;
+    font-size: 10px;
+    margin-bottom: 0;
+  }
+  
+  .bi-value {
+    font-size: 12px;
+  }
+  
+  .bi-value.stk {
+    font-size: 17px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .pay-code-box {
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+  }
+  
+  .pay-code-value {
+    font-size: 24px;
+    letter-spacing: 4px;
+  }
+  
+  .qr-frame {
+    padding: 8px;
+    border-radius: 12px;
+  }
+  
+  .qr-img {
+    width: 170px;
+    height: 170px;
+  }
+  
+  .pay-note {
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    border-radius: 10px;
+  }
+  
+  .pay-note-icon {
+    font-size: 20px;
+  }
+  
+  .pay-note-text {
+    font-size: 12px;
+  }
+  
+  .zalo-confirm-btn {
+    padding: 12px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
 }
 
 @keyframes lesson-slide {
