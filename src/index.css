@@ -1601,6 +1601,11 @@ select.form-ctrl option { background: #fff; color: var(--text-dark); }
    ============================================ */
 @media(max-width:768px) {
   .hero { padding: 40px 16px 50px; }
+  .hero-main-title {
+    font-size: clamp(32px, 8.5vw, 44px);
+    white-space: nowrap;
+    letter-spacing: -1.5px;
+  }
   .cta-box { padding: 36px 20px; }
   .modal-overlay { padding: 8px; }
   .modal-head, .reg-head, .pay-head, .products-head { padding: 20px 20px 14px; }
