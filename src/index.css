@@ -1292,6 +1292,46 @@ select.form-ctrl option { background: #fff; color: var(--text-dark); }
   transform: scale(1);
 }
 
+/* Custom Checkbox Design */
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 5px;
+  background-color: #fff;
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.custom-checkbox:hover {
+  border-color: rgba(232, 25, 44, 0.5);
+}
+
+.custom-checkbox:checked {
+  background-color: var(--red);
+  border-color: var(--red);
+}
+
+.custom-checkbox::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em white;
+  transform-origin: center;
+  clip-path: polygon(14% 44%, 0 58%, 38% 95%, 100% 16%, 86% 2%, 38% 68%);
+}
+
+.custom-checkbox:checked::before {
+  transform: scale(1);
+}
+
 /* Price Summary Box */
 .price-summary-box {
   background: linear-gradient(135deg, #fffafb, #fffbf7);
