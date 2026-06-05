@@ -588,21 +588,43 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
   const [form, setForm] = useState({
     name: '', email: '', zalo: '', ward: '', province: '',
   });
-  const [selectedCourse, setSelectedCourse] = useState<string>(() => {
-    if (defaultCourse) return defaultCourse;
-    return '';
+  const [selectedCourses, setSelectedCourses] = useState<string[]>(() => {
+    if (defaultCourse === 'Combo 6 Khoá Học - 999K') {
+      return COURSES.map(c => c.title);
+    } else if (defaultCourse) {
+      return [defaultCourse];
+    }
+    return [];
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSelectCourse = (title: string) => {
+  const isComboSelected = selectedCourses.length === COURSES.length;
+
+  const handleToggleCombo = () => {
     setError('');
-    setSelectedCourse(title);
+    if (isComboSelected) {
+      setSelectedCourses([]);
+    } else {
+      setSelectedCourses(COURSES.map(c => c.title));
+    }
   };
 
-  const getPaymentDetails = (selected: string) => {
-    if (selected === 'Combo 6 Khoá Học - 999K') {
+  const handleToggleCourse = (title: string) => {
+    setError('');
+    setSelectedCourses(prev => {
+      if (prev.includes(title)) {
+        return prev.filter(t => t !== title);
+      } else {
+        return [...prev, title];
+      }
+    });
+  };
+
+  const getPaymentDetails = (selected: string[]) => {
+    const isAll = selected.length === COURSES.length;
+    if (isAll) {
       return {
         courseName: 'Combo 6 Khoá Học - 999K',
         price: 999000,
@@ -610,7 +632,7 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
       };
     }
 
-    if (!selected) {
+    if (selected.length === 0) {
       return {
         courseName: '',
         price: 0,
@@ -618,15 +640,42 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
       };
     }
 
-    const payInfo = COURSE_PAY[selected];
+    let totalPrice = 0;
+    const codes: string[] = [];
+    const names: string[] = [];
+
+    COURSES.forEach(c => {
+      if (selected.includes(c.title)) {
+        const payInfo = COURSE_PAY[c.title];
+        if (payInfo) {
+          totalPrice += payInfo.price;
+          codes.push(payInfo.code);
+          names.push(c.title);
+        }
+      }
+    });
+
+    if (totalPrice >= 999000) {
+      return {
+        courseName: 'Combo 6 Khoá Học - 999K',
+        price: 999000,
+        code: 'COMBO',
+      };
+    }
+
     return {
-      courseName: selected,
-      price: payInfo ? payInfo.price : 0,
-      code: payInfo ? payInfo.code : '',
+      courseName: names.join(', '),
+      price: totalPrice,
+      code: codes.join(' '),
     };
   };
 
-  const { price: currentPrice, code: currentCode, courseName: currentCourseName } = getPaymentDetails(selectedCourse);
+  const { price: currentPrice, code: currentCode, courseName: currentCourseName } = getPaymentDetails(selectedCourses);
+  const rawSum = selectedCourses.reduce((sum, title) => {
+    const payInfo = COURSE_PAY[title];
+    return sum + (payInfo ? payInfo.price : 0);
+  }, 0);
+  const isComboUpgrade = !isComboSelected && selectedCourses.length > 0 && rawSum >= 999000;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -640,7 +689,7 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
     if (!form.zalo.trim()) return setError('⚠️ Vui lòng nhập số Zalo');
     if (!form.ward.trim()) return setError('⚠️ Vui lòng nhập xã / phường');
     if (!form.province.trim()) return setError('⚠️ Vui lòng nhập tỉnh / thành phố');
-    if (!selectedCourse) return setError('⚠️ Vui lòng chọn khoá học');
+    if (selectedCourses.length === 0) return setError('⚠️ Vui lòng chọn ít nhất một khoá học');
 
     setLoading(true);
     try {
@@ -702,20 +751,19 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
                 </div>
               </div>
               <div className="form-group">
-                <label className="form-lbl">📚 Chọn khoá học (Tích chọn 1 khoá)</label>
+                <label className="form-lbl">📚 Chọn khoá học (Tích chọn 1 hoặc nhiều)</label>
                 <div className="course-checklist">
                   {/* Combo Option Card */}
                   <div 
-                    className={`course-check-item combo-item ${selectedCourse === 'Combo 6 Khoá Học - 999K' ? 'checked' : ''}`}
-                    onClick={() => handleSelectCourse('Combo 6 Khoá Học - 999K')}
+                    className={`course-check-item combo-item ${isComboSelected ? 'checked' : ''}`}
+                    onClick={handleToggleCombo}
                   >
                     <div className="course-check-left">
                       <input 
-                        type="radio"
-                        name="course-selection"
-                        checked={selectedCourse === 'Combo 6 Khoá Học - 999K'}
+                        type="checkbox"
+                        checked={isComboSelected}
                         onChange={() => {}}
-                        className="custom-radio"
+                        className="custom-checkbox"
                       />
                       <div className="course-check-info">
                         <span className="course-check-badge">🔥 Siêu tiết kiệm</span>
@@ -732,20 +780,19 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
 
                   {/* Individual Course Cards */}
                   {COURSES.map(c => {
-                    const isChecked = selectedCourse === c.title;
+                    const isChecked = selectedCourses.includes(c.title);
                     return (
                       <div 
                         key={c.id}
                         className={`course-check-item ${isChecked ? 'checked' : ''}`}
-                        onClick={() => handleSelectCourse(c.title)}
+                        onClick={() => handleToggleCourse(c.title)}
                       >
                         <div className="course-check-left">
                           <input 
-                            type="radio"
-                            name="course-selection"
+                            type="checkbox"
                             checked={isChecked}
                             onChange={() => {}}
-                            className="custom-radio"
+                            className="custom-checkbox"
                           />
                           <span className="course-check-icon">{c.icon}</span>
                           <span className="course-check-title">#{c.id} – {c.title}</span>
@@ -759,16 +806,21 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
                 </div>
 
                 {/* Price Summary Box */}
-                {selectedCourse && (
+                {selectedCourses.length > 0 && (
                   <div className="price-summary-box">
                     <div className="price-summary-row">
-                      <span>Đăng ký:</span>
-                      <strong>{selectedCourse === 'Combo 6 Khoá Học - 999K' ? 'Combo 6 khoá học' : '1 khoá học'}</strong>
+                      <span>Số lượng đã chọn:</span>
+                      <strong>{isComboSelected ? 6 : selectedCourses.length} khoá học</strong>
                     </div>
                     <div className="price-summary-row highlight">
                       <span>TỔNG TIỀN TẠM TÍNH:</span>
                       <span className="summary-price">{currentPrice.toLocaleString('vi-VN')}đ</span>
                     </div>
+                    {isComboUpgrade && (
+                      <div className="combo-upgrade-tip">
+                        🎉 Đã tự động kích hoạt giá **COMBO 999K** tối ưu nhất cho bạn!
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
