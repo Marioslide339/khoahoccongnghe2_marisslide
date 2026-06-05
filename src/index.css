@@ -1056,7 +1056,7 @@ footer a:hover { color: #fff; }
   background: var(--bg-page);
   border: 1.5px solid var(--border);
   border-radius: 12px; color: var(--text-dark);
-  font-size: 14px; font-family: var(--font);
+  font-size: 16px; font-family: var(--font);
   transition: border-color .25s, background .25s, box-shadow .25s;
   outline: none; -webkit-appearance: none;
 }
@@ -1253,14 +1253,14 @@ select.form-ctrl option { background: #fff; color: var(--text-dark); }
   color: #9a3412;
 }
 
-/* Custom Checkbox Design */
-.custom-checkbox {
+/* Custom Radio Design */
+.custom-radio {
   appearance: none;
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
   border: 2px solid var(--border);
-  border-radius: 5px;
+  border-radius: 50%;
   background-color: #fff;
   display: inline-grid;
   place-content: center;
@@ -1269,27 +1269,26 @@ select.form-ctrl option { background: #fff; color: var(--text-dark); }
   flex-shrink: 0;
 }
 
-.custom-checkbox:hover {
+.custom-radio:hover {
   border-color: rgba(232, 25, 44, 0.5);
 }
 
-.custom-checkbox:checked {
+.custom-radio:checked {
   background-color: var(--red);
   border-color: var(--red);
 }
 
-.custom-checkbox::before {
+.custom-radio::before {
   content: "";
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   transform: scale(0);
   transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em white;
-  transform-origin: center;
-  clip-path: polygon(14% 44%, 0 58%, 38% 95%, 100% 16%, 86% 2%, 38% 68%);
+  background-color: white;
 }
 
-.custom-checkbox:checked::before {
+.custom-radio:checked::before {
   transform: scale(1);
 }
 
@@ -1574,12 +1573,6 @@ select.form-ctrl option { background: #fff; color: var(--text-dark); }
 }
 
 @media(max-width:480px) {
-  /* Prevent horizontal layout squeeze of input fields on mobile */
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-  
   .form-group {
     margin-bottom: 12px;
   }
