@@ -909,9 +909,9 @@ export default function App() {
 
         {/* ===================== HERO ===================== */}
         <header className="hero">
-          <div className="hero-brand-bar" aria-label="MARIS SLIDE - 0396581283">
+          <div className="hero-brand-bar" aria-label="ZALO HỖ TRỢ - 0396581283">
             <div className="brand-dot" />
-            <span className="brand-name">MARIS SLIDE</span>
+            <span className="brand-name">ZALO HỖ TRỢ</span>
             <div className="brand-divider" />
             <span className="brand-phone">0396.581.283</span>
             <div className="brand-dot" />
