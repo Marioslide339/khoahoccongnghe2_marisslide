@@ -837,6 +837,133 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
 }
 
 /* =============================================
+   DATA – TESTIMONIALS
+   ============================================= */
+interface Testimonial {
+  id: number;
+  name: string;
+  school: string;
+  date: string;
+  rating: number;
+  content: string;
+  avatarColor: string;
+  avatarLetter: string;
+}
+
+const TESTIMONIALS: Testimonial[] = [
+  // === Khoá học (10 phản hồi) ===
+  { id: 1, name: 'Cô Trúc Quỳnh', school: 'Trường TH Trần Quốc Toản, Quảng Ninh', date: '12/06/2026', rating: 5, content: 'Sau 5 buổi khoá học AI giáo dục tại Maris, giảng viên chỉ bảo tận tình từ viết prompt đến tích hợp slide. Từ lạ lẫm công nghệ, giờ mình đã tự tin ứng dụng số chuẩn quốc tế.', avatarColor: '#e8192c', avatarLetter: 'Q' },
+  { id: 2, name: 'Thầy Nguyễn Đức Nam', school: 'Trường THPT Chuyên Quốc Học Huế', date: '18/06/2026', rating: 5, content: 'Cực kỳ ấn tượng với dịch vụ thiết kế Sáng kiến kinh nghiệm và báo cáo chuyên đề của Maris. Slide trực quan, chuyên nghiệp, giúp tôi bảo vệ thành công đề tài nghiên cứu cấp Tỉnh đạt loại Xuất sắc!', avatarColor: '#f97316', avatarLetter: 'N' },
+  { id: 3, name: 'Cô Nguyễn Thị Hồng Hà', school: 'Trường Tiểu Học Kim Đồng, TP.HCM', date: '14/06/2026', rating: 5, content: 'Nhờ kho 300 game Powerpoint và app AI viết SKKN của Maris Slide mà năm nay mình hoàn thành báo cáo chuyên đề xuất sắc, học sinh trong lớp thi hào hứng tham gia hoạt động hơn hẳn!', avatarColor: '#8b5cf6', avatarLetter: 'H' },
+  { id: 4, name: 'Thầy Lê Văn Tùng', school: 'Trường THPT Chuyên Lê Quý Đôn, Đà Nẵng', date: '10/06/2026', rating: 5, content: 'Phần mềm iSpring Suite qua khoá học của Maris giúp tôi tạo bài giảng E-Learning dùng cực mượt. Đặc biệt app bảng AI giúp tôi soạn bài chỉ vật lý cực kỳ đẳng cấp.', avatarColor: '#10b981', avatarLetter: 'T' },
+  { id: 5, name: 'Cô Phạm Thanh Lan', school: 'Trường THCS Nguyễn Trãi, Hà Nội', date: '08/06/2026', rating: 5, content: 'Khoá học Canva và PowerPoint nâng cao thay đổi hoàn toàn cách mình soạn giáo án. Slide đẹp, chuyên nghiệp, học sinh ai cũng thích thú. Cảm ơn Maris Slide rất nhiều!', avatarColor: '#e8192c', avatarLetter: 'L' },
+  { id: 6, name: 'Thầy Trần Minh Hoàng', school: 'Trường TH Lê Lợi, Nghệ An', date: '05/06/2026', rating: 5, content: 'Mình đăng ký Combo 6 khoá rất hời! Từ AI, PowerPoint, Canva, iSpring đến video editing đều có. Giảng viên nhiệt tình, hỗ trợ qua Zalo cực nhanh.', avatarColor: '#6366f1', avatarLetter: 'H' },
+  { id: 7, name: 'Cô Đỗ Thị Minh Châu', school: 'Trường MN Hoa Sen, Bình Dương', date: '02/06/2026', rating: 5, content: 'Khoá CapCut chỉnh sửa video dạy học quá tuyệt! Giờ mình tự quay và biên tập video bài giảng cho các bé mầm non, phụ huynh khen không ngớt.', avatarColor: '#f97316', avatarLetter: 'C' },
+  { id: 8, name: 'Thầy Võ Văn Đạt', school: 'Trường THPT Nguyễn Du, Bình Định', date: '28/05/2026', rating: 5, content: 'Sau khoá học PowerPoint chuẩn quốc tế, mình đã tự tạo được hệ thống 50 slide bài giảng tương tác cho cả học kỳ. Học sinh không còn ngủ gật nữa!', avatarColor: '#10b981', avatarLetter: 'Đ' },
+  { id: 9, name: 'Cô Lý Thị Hương', school: 'Trường TH Nguyễn Bỉnh Khiêm, Cần Thơ', date: '25/05/2026', rating: 5, content: 'Khoá AI ứng dụng cho giáo viên giúp mình tiết kiệm 70% thời gian soạn bài. Prompt AI viết SKKN chạy chuẩn luôn, chỉ cần chỉnh sửa nhẹ là xong.', avatarColor: '#8b5cf6', avatarLetter: 'H' },
+  { id: 10, name: 'Thầy Bùi Quốc Anh', school: 'Trường THCS Lương Thế Vinh, Hải Phòng', date: '20/05/2026', rating: 5, content: 'Combo khoá học Maris Slide chất lượng vượt mong đợi. Video bài giảng rõ ràng, đi từ cơ bản đến nâng cao. Đã giới thiệu cho cả tổ bộ môn đăng ký.', avatarColor: '#e8192c', avatarLetter: 'A' },
+  // === Dịch vụ thiết kế đạt giải (5 phản hồi) ===
+  { id: 11, name: 'Cô Phan Thị Thu', school: 'Trường TH Trưng Vương, Đắk Lắk', date: '15/06/2026', rating: 5, content: 'Maris thiết kế slide SKKN cho mình đạt giải Nhất cấp Huyện và giải Nhì cấp Tỉnh năm 2026! Trình bày khoa học, hình ảnh minh họa cực đẹp và chuyên nghiệp.', avatarColor: '#6366f1', avatarLetter: 'T' },
+  { id: 12, name: 'Thầy Đặng Hữu Phước', school: 'Trường THCS Nguyễn Huệ, Khánh Hoà', date: '13/06/2026', rating: 5, content: 'Đề tài SKKN về ứng dụng AI trong dạy Toán được Maris thiết kế slide bảo vệ xuất sắc. Hội đồng giám khảo cấp Tỉnh đánh giá rất cao phần trình bày, đạt giải Nhất!', avatarColor: '#f97316', avatarLetter: 'P' },
+  { id: 13, name: 'Cô Nguyễn Ánh Tuyết', school: 'Trường MN Sơn Ca, Lâm Đồng', date: '09/06/2026', rating: 5, content: 'Nhờ đội ngũ Maris thiết kế, bộ slide chuyên đề của mình đạt giải Ba cấp Quốc gia! Từ bố cục, màu sắc đến animation đều hoàn hảo, vượt xa kỳ vọng.', avatarColor: '#10b981', avatarLetter: 'T' },
+  { id: 14, name: 'Thầy Lê Thanh Sơn', school: 'Trường THPT Lê Hồng Phong, Nam Định', date: '06/06/2026', rating: 5, content: 'Slide báo cáo chuyên đề do Maris thiết kế giúp mình đạt giải cấp Xã và được chọn đi thi cấp Huyện. Trình bày logic, dễ theo dõi, ban giám khảo rất ấn tượng.', avatarColor: '#8b5cf6', avatarLetter: 'S' },
+  { id: 15, name: 'Cô Hoàng Minh Thư', school: 'Trường TH Đoàn Thị Điểm, Hà Nội', date: '01/06/2026', rating: 5, content: 'Dịch vụ thiết kế SKKN của Maris quá chuyên nghiệp. Bài thuyết trình đạt giải Nhất cấp Quận, đang chuẩn bị thi cấp Thành phố. Chắc chắn sẽ quay lại!', avatarColor: '#e8192c', avatarLetter: 'T' },
+  // === Quà tặng hấp dẫn (5 phản hồi) ===
+  { id: 16, name: 'Cô Trương Thị Mai', school: 'Trường TH Lê Văn Tám, Bà Rịa - Vũng Tàu', date: '17/06/2026', rating: 5, content: 'Đăng ký khoá học được tặng kèm 300 game PowerPoint tương tác và bộ 1000 icon giáo dục siêu đẹp. Quà tặng giá trị hơn cả khoá học, không thể tin được!', avatarColor: '#6366f1', avatarLetter: 'M' },
+  { id: 17, name: 'Thầy Ngô Đức Thắng', school: 'Trường THCS Chu Văn An, Thái Nguyên', date: '11/06/2026', rating: 5, content: 'Quà tặng app AI viết SKKN trọn đời và kho template Canva Premium cực khủng. Mình dùng cả năm không hết! Maris cho đi nhiều hơn những gì mình trả.', avatarColor: '#f97316', avatarLetter: 'T' },
+  { id: 18, name: 'Cô Vũ Thị Ngọc Ánh', school: 'Trường MN Tuổi Thơ, Quảng Nam', date: '07/06/2026', rating: 5, content: 'Ngoài khoá học chất lượng, còn được tặng bộ slide mẫu thiết kế sẵn theo từng môn và kho nhạc không bản quyền cho video. Quà tặng thiệt sự rất hấp dẫn!', avatarColor: '#10b981', avatarLetter: 'A' },
+  { id: 19, name: 'Thầy Huỳnh Tấn Phát', school: 'Trường TH Hoàng Văn Thụ, Long An', date: '03/06/2026', rating: 5, content: 'Kho 300 game Powerpoint tương tác được tặng kèm quá xịn! Đủ thể loại từ đuổi hình bắt chữ, lật thẻ, quiz... Học sinh tranh nhau được chơi game mỗi tiết.', avatarColor: '#8b5cf6', avatarLetter: 'P' },
+  { id: 20, name: 'Cô Đinh Hồng Nhung', school: 'Trường THCS Quang Trung, Thanh Hoá', date: '30/05/2026', rating: 5, content: 'Mua combo 6 khoá được tặng thêm tài khoản Canva Pro 1 năm và bộ font chữ Việt hoá cao cấp. Quà tặng quá hời, đồng nghiệp ai cũng muốn đăng ký theo!', avatarColor: '#e8192c', avatarLetter: 'N' },
+];
+
+/* =============================================
+   REVIEW MODAL
+   ============================================= */
+function ReviewModal({ onClose }: { onClose: () => void }) {
+  const [rating, setRating] = useState(5);
+  const [hoveredStar, setHoveredStar] = useState(0);
+  const [form, setForm] = useState({ name: '', school: '', comment: '' });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim() || !form.comment.trim()) return;
+    setSubmitted(true);
+    setTimeout(onClose, 2000);
+  };
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="review-modal" onClick={e => e.stopPropagation()}>
+        <div className="review-modal-accent" />
+        <button className="review-close-btn" onClick={onClose} aria-label="Đóng">✕</button>
+        {submitted ? (
+          <div style={{ padding: '60px 28px', textAlign: 'center' }}>
+            <div style={{ fontSize: 56, marginBottom: 16 }}>🎉</div>
+            <h3 style={{ fontSize: 20, fontWeight: 900, color: 'var(--text-dark)', marginBottom: 8 }}>Cảm ơn bạn!</h3>
+            <p style={{ fontSize: 14, color: 'var(--text-muted)' }}>Đánh giá của bạn đã được ghi nhận.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="review-head">
+              <h3 className="review-head-title">Gửi Đánh Giá Học Viên</h3>
+              <p className="review-head-desc">Đóng góp của thầy cô giúp cộng đồng giáo dục phát triển hơn</p>
+              <div className="review-stars-select">
+                {[1,2,3,4,5].map(star => (
+                  <button
+                    key={star}
+                    type="button"
+                    className={`review-star-btn ${star <= (hoveredStar || rating) ? 'active' : ''}`}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoveredStar(star)}
+                    onMouseLeave={() => setHoveredStar(0)}
+                    aria-label={`${star} sao`}
+                  >★</button>
+                ))}
+              </div>
+            </div>
+            <div className="review-body">
+              <div className="review-field">
+                <label>Họ tên Thầy/Cô *</label>
+                <input
+                  type="text"
+                  placeholder="Ví dụ: Cô Trần Thị Thảo"
+                  value={form.name}
+                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="review-field">
+                <label>Đơn vị công tác (Trường / Tỉnh)</label>
+                <input
+                  type="text"
+                  placeholder="Ví dụ: Trường Tiểu Học Lê Lợi, Nghệ An"
+                  value={form.school}
+                  onChange={e => setForm(f => ({ ...f, school: e.target.value }))}
+                />
+              </div>
+              <div className="review-field">
+                <label>Nhận xét của thầy cô *</label>
+                <textarea
+                  placeholder="Hãy chia sẻ trải nghiệm về kho quà tặng PowerPoint, ứng dụng AI hay các khoá học của Maris Slide..."
+                  value={form.comment}
+                  onChange={e => setForm(f => ({ ...f, comment: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="review-actions">
+                <button type="button" className="review-cancel-btn" onClick={onClose}>Huỷ Bỏ</button>
+                <button type="submit" className="review-submit-btn" disabled={!form.name.trim() || !form.comment.trim()}>✨ Gửi Phản Hồi Ngay</button>
+              </div>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* =============================================
    MAIN APP
    ============================================= */
 export default function App() {
@@ -846,6 +973,7 @@ export default function App() {
   const [showPayment, setShowPayment] = useState(false);
   const [paymentInfo, setPaymentInfo] = useState({ courseName: '', price: 0, code: '' });
   const [showProducts, setShowProducts] = useState(false);
+  const [showReview, setShowReview] = useState(false);
 
   const openRegister = useCallback((courseName = '') => {
     setDefaultRegCourse(courseName);
@@ -859,10 +987,10 @@ export default function App() {
 
   // Lock body scroll when any modal is open
   useEffect(() => {
-    const anyModalOpen = !!(activeCourse || showRegister || showPayment || showProducts);
+    const anyModalOpen = !!(activeCourse || showRegister || showPayment || showProducts || showReview);
     document.body.style.overflow = anyModalOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
-  }, [activeCourse, showRegister, showPayment, showProducts]);
+  }, [activeCourse, showRegister, showPayment, showProducts, showReview]);
 
   // Close on Escape
   useEffect(() => {
@@ -872,6 +1000,7 @@ export default function App() {
         setShowRegister(false);
         setShowPayment(false);
         setShowProducts(false);
+        setShowReview(false);
       }
     };
     window.addEventListener('keydown', handler);
@@ -1070,6 +1199,43 @@ export default function App() {
           </div>
         </section>
 
+        {/* ===================== TESTIMONIALS ===================== */}
+        <section className="testimonials-section" id="testimonials">
+          <div className="container">
+            <div className="testimonials-header">
+              <div className="testimonials-header-text">
+                <h2 className="testimonials-title">Chia Sẻ Từ Quý Thầy Cô Học Viên</h2>
+                <p className="testimonials-subtitle">Phản hồi thực tế từ các nhà giáo trên toàn quốc đã ứng dụng hiệu quả tài nguyên Maris Slide.</p>
+              </div>
+              <button className="testimonials-send-btn" onClick={() => setShowReview(true)} id="send-review-btn">
+                Gửi Đánh Giá Của Bạn
+              </button>
+            </div>
+            <div className="testimonials-track-wrapper">
+              <div className="testimonials-track">
+                {[...TESTIMONIALS, ...TESTIMONIALS].map((t, i) => (
+                  <div className="testimonial-card" key={`${t.id}-${i}`}>
+                    <div className="testimonial-card-top">
+                      <span className="testimonial-date">{t.date}</span>
+                      <div className="testimonial-stars">
+                        {Array.from({ length: t.rating }, (_, j) => <span key={j}>★</span>)}
+                      </div>
+                    </div>
+                    <div className="testimonial-content">{t.content}</div>
+                    <div className="testimonial-author">
+                      <div className="testimonial-avatar" style={{ background: t.avatarColor }}>{t.avatarLetter}</div>
+                      <div className="testimonial-author-info">
+                        <span className="testimonial-author-name">{t.name}</span>
+                        <span className="testimonial-author-school">{t.school}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* ===================== STATS & SHOWCASE ===================== */}
         <section className="stats-section" id="stats">
           <div className="container">
@@ -1190,6 +1356,8 @@ export default function App() {
           onClose={() => setShowPayment(false)}
         />
       )}
+
+      {showReview && <ReviewModal onClose={() => setShowReview(false)} />}
     </>
   );
 }
