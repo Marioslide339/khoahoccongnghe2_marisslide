@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './index.css';
+import logoImg from './logo.png';
 
 /* =============================================
    CONSTANTS
@@ -1018,7 +1019,7 @@ export default function App() {
         <nav className="top-bar" role="navigation" aria-label="Điều hướng chính">
           <div className="top-bar-inner">
             <a href="#" className="brand">
-              <div className="brand-logo">M</div>
+              <img src={logoImg} alt="Maris Slide Logo" className="brand-logo-img" />
               <div className="brand-text">
                 <span className="name">Maris Slide</span>
                 <span className="tagline">Tiên phong công nghệ giáo dục</span>
