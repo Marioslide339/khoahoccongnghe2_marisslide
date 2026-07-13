@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Chặn các file hệ thống
+Disallow: /src/
+Disallow: /node_modules/
+Disallow: /.git/
+
+# Sitemap
+Sitemap: https://YOUR_DOMAIN/sitemap.xml
