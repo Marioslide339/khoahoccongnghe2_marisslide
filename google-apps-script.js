@@ -25,7 +25,7 @@
 // ID của Google Sheet - lấy từ URL của sheet
 // Ví dụ: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit
 // Để trống để dùng Sheet hiện tại (sheet chứa script này)
-const SPREADSHEET_ID = '';
+const SPREADSHEET_ID = '1Px5xnvTusfYeEWEdIEVdVIoR38QMZv_N56duwWY83pg';
 
 function getSheet() {
   let ss;
