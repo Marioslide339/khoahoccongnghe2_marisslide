@@ -6,7 +6,7 @@ import logoImg from './logo.png';
    CONSTANTS
    ============================================= */
 const GOOGLE_SCRIPT_URL =
-  'https://script.google.com/macros/s/AKfycbz9T4UH_OKvVwO2prLEwC-6Uf1_nCwFKG2dtdHmw6mVDQTqHG4i5vpjlNddNY9FAJiq/exec';
+  'https://script.google.com/macros/s/AKfycbzE1Ne8LwD0cWwTkBpMHo55P6rRznWdr19SACqsvTg_JE93rNqTgKrw_wAmiUZ61SEc/exec';
 
 const LESSON_COLORS = [
   '#7b2ff7','#4a9fff','#ff6b00','#00c851',
