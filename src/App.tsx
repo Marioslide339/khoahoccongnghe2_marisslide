@@ -616,7 +616,6 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
     return [];
   });
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const isComboSelected = selectedCourses.length === COURSES.length;
@@ -723,13 +722,14 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
     } finally {
       setLoading(false);
     }
-    setSuccess(true);
     // Facebook Pixel: Lead event on successful registration
     trackFBEvent('Lead', {
       content_name: currentCourseName,
       value: currentPrice,
       currency: 'VND',
     });
+    // Chuyển trực tiếp đến trang thanh toán
+    onPayment(currentCourseName, currentPrice, currentCode);
   };
 
   return (
@@ -741,120 +741,108 @@ function RegisterModal({ defaultCourse = '', onClose, onPayment }: RegisterModal
           <div className="reg-subtitle">Điền thông tin để đăng ký khoá học</div>
         </div>
         <div className="reg-body">
-          {success ? (
-            <div className="success-box">
-              <span className="big-check">✅</span>
-              <h3>Đăng ký thành công!</h3>
-              <p>Cảm ơn <strong id="success-name">{form.name}</strong>!<br />Vui lòng <strong>chuyển khoản</strong> để hoàn tất đăng ký.</p>
-              <button className="form-submit-btn" style={{ marginTop: 16 }} onClick={() => { onClose(); onPayment(currentCourseName, currentPrice, currentCode); }}>
-                <span>💳</span> Đến Trang Thanh Toán
-              </button>
-              <button className="close-success-btn" style={{ marginTop: 10 }} onClick={onClose}>Đóng</button>
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="form-group">
+              <label className="form-lbl" htmlFor="f-name">👤 Họ và Tên</label>
+              <input id="f-name" name="name" className="form-ctrl" type="text" placeholder="Nhập họ và tên đầy đủ..." value={form.name} onChange={handleChange} autoComplete="name" />
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} noValidate>
+            <div className="form-group">
+              <label className="form-lbl" htmlFor="f-email">📧 Email</label>
+              <input id="f-email" name="email" className="form-ctrl" type="email" placeholder="example@gmail.com" value={form.email} onChange={handleChange} autoComplete="email" />
+            </div>
+            <div className="form-group">
+              <label className="form-lbl" htmlFor="f-zalo">💬 Số Zalo</label>
+              <input id="f-zalo" name="zalo" className="form-ctrl" type="tel" placeholder="0xxx.xxx.xxx" value={form.zalo} onChange={handleChange} autoComplete="tel" />
+            </div>
+            <div className="form-row">
               <div className="form-group">
-                <label className="form-lbl" htmlFor="f-name">👤 Họ và Tên</label>
-                <input id="f-name" name="name" className="form-ctrl" type="text" placeholder="Nhập họ và tên đầy đủ..." value={form.name} onChange={handleChange} autoComplete="name" />
+                <label className="form-lbl" htmlFor="f-ward">📍 Xã (Phường)</label>
+                <input id="f-ward" name="ward" className="form-ctrl" type="text" placeholder="Xã / phường..." value={form.ward} onChange={handleChange} />
               </div>
               <div className="form-group">
-                <label className="form-lbl" htmlFor="f-email">📧 Email</label>
-                <input id="f-email" name="email" className="form-ctrl" type="email" placeholder="example@gmail.com" value={form.email} onChange={handleChange} autoComplete="email" />
+                <label className="form-lbl" htmlFor="f-province">🏙️ Tỉnh (TP)</label>
+                <input id="f-province" name="province" className="form-ctrl" type="text" placeholder="Tỉnh / thành phố..." value={form.province} onChange={handleChange} />
               </div>
-              <div className="form-group">
-                <label className="form-lbl" htmlFor="f-zalo">💬 Số Zalo</label>
-                <input id="f-zalo" name="zalo" className="form-ctrl" type="tel" placeholder="0xxx.xxx.xxx" value={form.zalo} onChange={handleChange} autoComplete="tel" />
-              </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label className="form-lbl" htmlFor="f-ward">📍 Xã (Phường)</label>
-                  <input id="f-ward" name="ward" className="form-ctrl" type="text" placeholder="Xã / phường..." value={form.ward} onChange={handleChange} />
-                </div>
-                <div className="form-group">
-                  <label className="form-lbl" htmlFor="f-province">🏙️ Tỉnh (TP)</label>
-                  <input id="f-province" name="province" className="form-ctrl" type="text" placeholder="Tỉnh / thành phố..." value={form.province} onChange={handleChange} />
-                </div>
-              </div>
-              <div className="form-group">
-                <label className="form-lbl">📚 Chọn khoá học (Tích chọn 1 hoặc nhiều)</label>
-                <div className="course-checklist">
-                  {/* Combo Option Card */}
-                  <div 
-                    className={`course-check-item combo-item ${isComboSelected ? 'checked' : ''}`}
-                    onClick={handleToggleCombo}
-                  >
-                    <div className="course-check-left">
-                      <input 
-                        type="checkbox"
-                        checked={isComboSelected}
-                        onChange={() => {}}
-                        className="custom-checkbox"
-                      />
-                      <div className="course-check-info">
-                        <span className="course-check-badge">🔥 Siêu tiết kiệm</span>
-                        <span className="course-check-title">⭐ COMBO 6 KHOÁ HỌC</span>
-                      </div>
-                    </div>
-                    <div className="course-check-price">
-                      <span className="course-price-old">2.494K</span>
-                      <span className="course-price-new">999K</span>
+            </div>
+            <div className="form-group">
+              <label className="form-lbl">📚 Chọn khoá học (Tích chọn 1 hoặc nhiều)</label>
+              <div className="course-checklist">
+                {/* Combo Option Card */}
+                <div 
+                  className={`course-check-item combo-item ${isComboSelected ? 'checked' : ''}`}
+                  onClick={handleToggleCombo}
+                >
+                  <div className="course-check-left">
+                    <input 
+                      type="checkbox"
+                      checked={isComboSelected}
+                      onChange={() => {}}
+                      className="custom-checkbox"
+                    />
+                    <div className="course-check-info">
+                      <span className="course-check-badge">🔥 Siêu tiết kiệm</span>
+                      <span className="course-check-title">⭐ COMBO 6 KHOÁ HỌC</span>
                     </div>
                   </div>
-
-                  <div className="course-checklist-divider">Hoặc đăng ký từng khoá học lẻ</div>
-
-                  {/* Individual Course Cards */}
-                  {COURSES.map(c => {
-                    const isChecked = selectedCourses.includes(c.title);
-                    return (
-                      <div 
-                        key={c.id}
-                        className={`course-check-item ${isChecked ? 'checked' : ''}`}
-                        onClick={() => handleToggleCourse(c.title)}
-                      >
-                        <div className="course-check-left">
-                          <input 
-                            type="checkbox"
-                            checked={isChecked}
-                            onChange={() => {}}
-                            className="custom-checkbox"
-                          />
-                          <span className="course-check-icon">{c.icon}</span>
-                          <span className="course-check-title">#{c.id} – {c.title}</span>
-                        </div>
-                        <div className="course-check-price">
-                          <span className="course-price-new">{c.salePrice}</span>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  <div className="course-check-price">
+                    <span className="course-price-old">2.494K</span>
+                    <span className="course-price-new">999K</span>
+                  </div>
                 </div>
 
-                {/* Price Summary Box */}
-                {selectedCourses.length > 0 && (
-                  <div className="price-summary-box">
-                    <div className="price-summary-row">
-                      <span>Số lượng đã chọn:</span>
-                      <strong>{isComboSelected ? 6 : selectedCourses.length} khoá học</strong>
-                    </div>
-                    <div className="price-summary-row highlight">
-                      <span>TỔNG TIỀN TẠM TÍNH:</span>
-                      <span className="summary-price">{currentPrice.toLocaleString('vi-VN')}đ</span>
-                    </div>
-                    {isComboUpgrade && (
-                      <div className="combo-upgrade-tip">
-                        🎉 Đã tự động kích hoạt giá **COMBO 999K** tối ưu nhất cho bạn!
+                <div className="course-checklist-divider">Hoặc đăng ký từng khoá học lẻ</div>
+
+                {/* Individual Course Cards */}
+                {COURSES.map(c => {
+                  const isChecked = selectedCourses.includes(c.title);
+                  return (
+                    <div 
+                      key={c.id}
+                      className={`course-check-item ${isChecked ? 'checked' : ''}`}
+                      onClick={() => handleToggleCourse(c.title)}
+                    >
+                      <div className="course-check-left">
+                        <input 
+                          type="checkbox"
+                          checked={isChecked}
+                          onChange={() => {}}
+                          className="custom-checkbox"
+                        />
+                        <span className="course-check-icon">{c.icon}</span>
+                        <span className="course-check-title">#{c.id} – {c.title}</span>
                       </div>
-                    )}
-                  </div>
-                )}
+                      <div className="course-check-price">
+                        <span className="course-price-new">{c.salePrice}</span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-              {error && <div className="err-msg">{error}</div>}
-              <button type="submit" id="form-submit-btn" className="form-submit-btn" disabled={loading}>
-                {loading ? <><span>⏳</span> Đang gửi...</> : <><span>🚀</span> Gửi Thông Tin Đăng Ký</>}
-              </button>
-            </form>
-          )}
+
+              {/* Price Summary Box */}
+              {selectedCourses.length > 0 && (
+                <div className="price-summary-box">
+                  <div className="price-summary-row">
+                    <span>Số lượng đã chọn:</span>
+                    <strong>{isComboSelected ? 6 : selectedCourses.length} khoá học</strong>
+                  </div>
+                  <div className="price-summary-row highlight">
+                    <span>TỔNG TIỀN TẠM TÍNH:</span>
+                    <span className="summary-price">{currentPrice.toLocaleString('vi-VN')}đ</span>
+                  </div>
+                  {isComboUpgrade && (
+                    <div className="combo-upgrade-tip">
+                      🎉 Đã tự động kích hoạt giá **COMBO 999K** tối ưu nhất cho bạn!
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            {error && <div className="err-msg">{error}</div>}
+            <button type="submit" id="form-submit-btn" className="form-submit-btn" disabled={loading}>
+              {loading ? <><span>⏳</span> Đang gửi...</> : <><span>🚀</span> Gửi Thông Tin Đăng Ký</>}
+            </button>
+          </form>
         </div>
       </div>
     </div>
