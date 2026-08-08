@@ -53,7 +53,7 @@ const COURSES: CourseData[] = [
     id: 1, icon: '🎓',
     title: 'Khoá Thiết Kế Bài Giảng E-Learning',
     subtitle: 'iSpring Suite 11',
-    oldPrice: '499K', salePrice: '299K', discount: 'Ưu đãi -40%',
+    oldPrice: '499K', salePrice: '399K', discount: 'Ưu đãi -20%',
     trialText: 'Bài 4: Tạo sẵn mẫu câu hỏi.',
     trialUrl: 'https://youtu.be/4yi01CWL9Y4',
     features: [
@@ -314,7 +314,7 @@ const GIFTS = [
    ============================================= */
 const COURSE_PAY: Record<string, { code: string; price: number }> = {
   'Combo 6 Khoá Học - 999K':              { code: 'COMBO', price: 999000 },
-  'Khoá Thiết Kế Bài Giảng E-Learning':   { code: 'ELEAR', price: 299000 },
+  'Khoá Thiết Kế Bài Giảng E-Learning':   { code: 'ELEAR', price: 399000 },
   'Khoá Ứng Dụng AI Vào Giảng Dạy':       { code: 'AIVGD', price: 399000 },
   'Khoá Tạo App Nâng Cao':                 { code: 'APPNC', price: 399000 },
   'Khoá Sử Dụng Canva':                    { code: 'CANVA', price: 299000 },
